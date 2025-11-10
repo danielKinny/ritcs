@@ -36,22 +36,15 @@ export async function GET(request: Request) {
             ? (basketqres[0] as { basketID: number }).basketID
             : null;
 
-        if (!basketID) {
-            const message = { error: "Basket not found" };
-            return new Response(JSON.stringify(message), {
-                status: 400,
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+        let basketNeedIDs: number[] = [];
+        if (basketID) {
+            const [needqres] = await db.execute(
+                "SELECT needID FROM basket_needs WHERE basketID = ?",
+                [basketID]
+            );
+
+            basketNeedIDs = Array.isArray(needqres) ? needqres.map((row) => (row as { needID: number }).needID) : [];
         }
-
-        const [needqres] = await db.execute(
-            "SELECT needID FROM basket_needs WHERE basketID = ?",
-            [basketID]
-        );
-
-        const basketNeedIDs = Array.isArray(needqres) ? needqres.map((row) => (row as { needID: number }).needID) : [];
 
         const [rows] = await db.execute("SELECT * FROM needs");
         const needs: Need[] = (Array.isArray(rows) ? (rows as Need[]) : [])

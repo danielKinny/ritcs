@@ -1,15 +1,45 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Need, User } from "../types";
+import { Need, User, StatsData } from "../types";
 import { useUser } from "../context/UserContext";
 import { DashboardComp } from "../comp/Dashboard";
 import Route from "../comp/Route";
 const LandingDashboard = () => {
   const [needs, setNeeds] = useState<Need[]>([]);
+  const defaultStats: StatsData = {
+    totalNeeds: 0,
+    totalNeeded: 0,
+    totalDonated: 0,
+    needsByCategory: {
+      Food: 0,
+      Clothing: 0,
+      Shelter: 0,
+      Medical: 0,
+      Education: 0,
+      Other: 0,
+    },
+  };
+
+  const [statsData, setStatsData] = useState<StatsData>(defaultStats);
   const {
-    atoken,
     currentUser,
   } = useUser(); //user ctx
+
+  useEffect( () => {
+          const fetchData = async () => {
+              try {
+                  const res = await fetch('/api/impact')
+                  if (!res.ok) {
+                      throw new Error('Failed to fetch impact data')
+                  }
+                  const statsData = await res.json()
+                  setStatsData(statsData)
+              } catch (error) {
+                  console.error('Error fetching impact data:', error)
+              }
+          }
+          fetchData()
+      }, [])
 
   useEffect(() => {
     const fetchNeeds = async () => {
@@ -39,7 +69,7 @@ const LandingDashboard = () => {
 
   return (
     <Route>
-          <DashboardComp currentUser={currentUser as User} needs={needs as Need[]} />
+          <DashboardComp currentUser={currentUser as User} needs={needs as Need[]} statsData={statsData} />
     </Route>
     //react is goated
   );

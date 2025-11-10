@@ -2,7 +2,7 @@ import React from "react";
 import { PropsWithChildren } from "react";
 import { useUser } from "../context/UserContext";
 
-const AdminRoute = ({ children }: PropsWithChildren<{}>) => {
+const Route = ({ children }: PropsWithChildren<{}>) => {
     const { currentUser } = useUser();
 
     if (currentUser === undefined) {
@@ -21,15 +21,7 @@ const AdminRoute = ({ children }: PropsWithChildren<{}>) => {
         );
     }
 
-    if (currentUser?.role !== "admin") {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <h1 className="text-2xl font-bold notable-regular">Access Denied. Admins Only.</h1>
-            </div>
-        );
-    }
-
     return <>{children}</>;
 };
 
-export default AdminRoute;
+export default Route;

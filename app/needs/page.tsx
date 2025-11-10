@@ -52,29 +52,28 @@ const NeedsPanel: FC = () => {
 
     <div className="min-h-screen bg-gray-50 text-gray-900 px-6 py-8">
       <header className="max-w-7xl mx-auto mb-8">
-        <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-4">
-          <div className="flex justify-center">
-            <h1 className="text-4xl font-extrabold notable-regular">
-              Needs Dashboard
-            </h1>
-          </div>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <h1 className="text-4xl font-extrabold notable-regular text-center sm:text-left">
+            Needs Dashboard
+          </h1>
 
-          <Link
-            className="bg-green-500 text-2xl cursor-pointer p-4 flex rounded-2xl items-center justify-center notable-regular hover:scale-105 transition-transform"
-            href="/basket"
-          >
-            <ArchiveBoxIcon className="h-9 w-9 mt-1 text-white" />
-            <p className="text-white mx-4">Basket</p>
-          </Link>
-
-          <div className="flex justify-end">
+          <div className="w-full sm:w-auto flex items-center gap-4">
             <input
               aria-label="Search needs"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by title, description or category"
-              className="w-full sm:w-80 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
+              className="flex-1 sm:flex-none w-full sm:w-80 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
+
+            <Link
+              className="bg-green-500 text-white cursor-pointer px-4 py-2 flex rounded-2xl items-center justify-center notable-regular hover:scale-105 transition-transform"
+              href="/basket"
+              aria-label="Open basket"
+            >
+              <ArchiveBoxIcon className="h-6 w-6 mt-1 text-white" />
+              <span className="ml-2">Basket</span>
+            </Link>
           </div>
         </div>
       </header>

@@ -1,4 +1,3 @@
-
 import databaseConnection from "../../database/dbinit";
 import { GET } from "../basket/route";
 

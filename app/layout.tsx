@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Geist, Geist_Mono, Funnel_Sans } from "next/font/google";
+import { Geist, Geist_Mono, Funnel_Sans, Notable } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "./context/UserContext";
 import type { User } from "@/app/types";
+import { Toaster} from "sonner";
+import Nav from "./comp/Nav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,6 +21,13 @@ const funnelSans = Funnel_Sans({
   variable: "--font-funnel",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const notable = Notable({
+  variable: "--font-notable",
+  subsets: ["latin"],
+  weight: "400",
   display: "swap",
 });
 
@@ -45,9 +54,13 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${funnelSans.className} ${geistSans.variable} ${geistMono.variable} ${funnelSans.variable} antialiased`}
+        className={`${funnelSans.className} ${geistSans.variable} ${geistMono.variable} ${funnelSans.variable} ${notable.variable} antialiased`}
       >
-        <UserProvider initialUser={initialUser}>{children}</UserProvider>
+        <UserProvider initialUser={initialUser}>
+          <Nav />
+          {children}
+        </UserProvider>
+        <Toaster/>
       </body>
     </html>
   );
