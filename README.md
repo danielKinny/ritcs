@@ -50,6 +50,7 @@ npm i
 
 # Run development server
 npm run dev
+```
 
 🗄️ Database Setup
 
@@ -57,20 +58,29 @@ npm run dev
 
     Start SQL server and login:
 
+```bash
+
 mysql -u {your-username} -p
+
+```
 
 Create the database:
 
+``` bash
     CREATE DATABASE ritcs;
 
     Run schema creation queries (provided in project).
 
     Insert sample data (provided in project).
 
+```
+
 🔐 Test Accounts
 Role	Username	Password
 Regular User	miraya1234	1234
 Admin	admin	admin0214
+
+
 🧱 Project Development Notes
 
 A key challenge during development was version control, primarily caused by:
