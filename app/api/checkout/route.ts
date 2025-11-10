@@ -3,10 +3,7 @@ import { GET } from "../basket/route";
 
 export const POST = async (request: Request) => {
   try {
-    const {
-      userID,
-    }: { userID: number } =
-      await request.json(); // get userID from params
+    const { userID }: { userID: number } = await request.json(); // get userID from params
 
     const res = await GET(new Request(`${request.url}?userID=${userID}`)); // fetch fresh basket data
     // the reason we arent just passing in the local state of needs in from the page before this is because
@@ -15,16 +12,16 @@ export const POST = async (request: Request) => {
     // the amount needed.
 
     if (!res.ok) {
-        const message = { error: "Failed to retrieve basket data" };
-        return new Response(JSON.stringify(message), {
-            status: res.status,
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+      const message = { error: "Failed to retrieve basket data" };
+      return new Response(JSON.stringify(message), {
+        status: res.status,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     }
 
-    const needData = await res.json()
+    const needData = await res.json();
     //first get the user's basketid so that we can use it to delete recs from junction table
     const db = await databaseConnection();
     const [basketqres] = await db.execute(
@@ -75,7 +72,8 @@ export const POST = async (request: Request) => {
       }
     );
   } catch (error) {
-    console.error("Error during checkout:", error);
+    // console.error("Error during checkout:", error);
+    void error;
     return new Response("Checkout failed", { status: 500 });
   }
 };

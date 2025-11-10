@@ -4,7 +4,7 @@ import {
   BookOpenIcon,
   ChevronDoubleUpIcon,
   MagnifyingGlassIcon,
-  ChartPieIcon
+  ChartPieIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import type { User, Need, StatsData } from "../types";
@@ -13,9 +13,6 @@ import { PieChart } from "@mui/x-charts/PieChart";
 import { priorityColor } from "@/lib/priority";
 
 import { SparklesIcon } from "@heroicons/react/24/outline";
-
-
-
 
 export const DashboardComp = ({
   currentUser,
@@ -57,7 +54,8 @@ export const DashboardComp = ({
           <div className="flex flex-col lg:flex-row items-center gap-6">
             <div className="w-64 h-64 border-r">
               <h1 className="text-center text-xl font-extrabold">
-                <ChartPieIcon className="inline-block h-6 w-6 text-gray-500 mr-1 mb-1" />Current Needs 
+                <ChartPieIcon className="inline-block h-6 w-6 text-gray-500 mr-1 mb-1" />
+                Current Needs
               </h1>
               <PieChart
                 series={[
@@ -74,7 +72,8 @@ export const DashboardComp = ({
             </div>
             <div className="flex-1 border-x px-4">
               <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 leading-tight">
-                Welcome back {currentUser?.username || "User"}! <SparklesIcon className="h-10 w-10 text-black-400 inline-block" />
+                Welcome back {currentUser?.username || "User"}!{" "}
+                <SparklesIcon className="h-10 w-10 text-black-400 inline-block" />
               </h1>{" "}
               {/*fallback cos we're just like that*/}
               <p className="mt-4 text-gray-600 text-lg">

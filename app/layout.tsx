@@ -48,6 +48,7 @@ export default async function RootLayout({
     try {
       initialUser = JSON.parse(userCookie) as User;
     } catch (err) {
+      void err;
       initialUser = null;
     }
   }

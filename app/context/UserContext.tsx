@@ -19,7 +19,9 @@ type props = PropsWithChildren<{
 
 export function UserProvider({ children, initialUser = null }: props) {
   //atoken is used for auth
-  const [atoken, setAtoken] = useState<string | null>(initialUser?.atoken ?? null);
+  const [atoken, setAtoken] = useState<string | null>(
+    initialUser?.atoken ?? null
+  );
   const [user, setUser] = useState<User | null>(initialUser ?? null);
 
   async function fetchUser(username: string, password: string): Promise<void> {
@@ -36,18 +38,18 @@ export function UserProvider({ children, initialUser = null }: props) {
       throw new Error("Failed to fetch user");
     } // if not okay, log evryything out
 
-    const { message: resMessage, currentUser: user } : { message: string, currentUser: User } = await res.json();
-    console.log("Login response message:", resMessage);
-    setAtoken(user?.atoken || null);
-    setUser(user); //logged in
+    const data = await res.json();
+    const fetchedUser: User = data.currentUser;
+    setAtoken(fetchedUser?.atoken || null);
+    setUser(fetchedUser); // logged in
   }
 
   async function removeUser(): Promise<void> {
     try {
-      await fetch('/api/logout', { method: 'POST' });
+      await fetch("/api/logout", { method: "POST" });
     } catch (e) {
       // ignore network errors and still clear client state
-      console.error('Logout API call failed', e);
+      void e;
     }
 
     setUser(null);
@@ -69,7 +71,8 @@ export function UserProvider({ children, initialUser = null }: props) {
   ); //wraps all child components with context
 }
 
-export function useUser() { //hook that can be used to access user context
+export function useUser() {
+  //hook that can be used to access user context
   const ctx = useContext(UserContext);
   if (!ctx) throw new Error("useUser must be used within a UserProvider");
   return ctx;

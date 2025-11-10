@@ -1,14 +1,15 @@
 import type { CommunityItem } from "@/app/types";
 import databaseConnection from "../../database/dbinit";
 
-export async function GET() { //fetch all community items
+export async function GET() {
+  //fetch all community items
   try {
     const db = await databaseConnection();
     const [rows] = await db.execute(
       "SELECT community_items.*,admin_community_items.adminID FROM community_items INNER JOIN admin_community_items ON community_items.id = admin_community_items.communityItemID ORDER BY createdAt DESC"
     ); // inner join to also get adminID who created the community item
 
-    console.log(rows);
+    // console.log(rows);
     const communityItems: CommunityItem[] = Array.isArray(rows)
       ? (rows as CommunityItem[])
       : [];
@@ -20,7 +21,8 @@ export async function GET() { //fetch all community items
       },
     });
   } catch (error) {
-    console.error("Error fetching community items:", error);
+    // console.error("Error fetching community items:", error);
+    void error;
     return new Response("Failed to fetch community items", { status: 500 });
   }
 }
@@ -54,7 +56,8 @@ export async function POST(request: Request) {
 
     return new Response(null, { status: 201 });
   } catch (error) {
-    console.error("Error creating community item:", error);
+    // console.error("Error creating community item:", error);
+    void error;
     return new Response("Failed to create community item", { status: 500 });
   }
 }

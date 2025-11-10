@@ -19,7 +19,8 @@ export const NeedCard = ({
   const [processing, setProcessing] = React.useState(false);
 
   const initialDonation = Number((need as BasketItem).donation) || 0;
-  const [donationAmount, setDonationAmount] = React.useState<number>(initialDonation);
+  const [donationAmount, setDonationAmount] =
+    React.useState<number>(initialDonation);
 
   const needed = Number(need.amountNeeded) || 0;
   const donated = Number(need.amountDonated) || 0;
@@ -34,11 +35,16 @@ export const NeedCard = ({
     if (processing) return;
     setProcessing(true);
     try {
-      const res = await fetch(`/api/basket?needID=${need.id}&userID=${userID}`, {
-        method: addedToBasket ? "DELETE" : "POST",
-        headers: addedToBasket ? undefined : { "Content-Type": "application/json" },
-        body: addedToBasket ? undefined : JSON.stringify({ donationAmount }),
-      });
+      const res = await fetch(
+        `/api/basket?needID=${need.id}&userID=${userID}`,
+        {
+          method: addedToBasket ? "DELETE" : "POST",
+          headers: addedToBasket
+            ? undefined
+            : { "Content-Type": "application/json" },
+          body: addedToBasket ? undefined : JSON.stringify({ donationAmount }),
+        }
+      );
 
       if (!res.ok) {
         const text = await res.text().catch(() => res.statusText || "");
@@ -46,45 +52,86 @@ export const NeedCard = ({
         throw new Error("Failed to update basket: " + (text || res.statusText));
       }
 
-      // Success: notify parent to update basket state. Do not update local donated amount here;
-      // rely on parent to re-fetch needs or update the need data so UI reflects server state.
+      // callback shenanigans
       onBasketChange?.(need.id, !addedToBasket);
-      toast.success("Need " + (addedToBasket ? "removed from basket" : `added to basket (pledged $${donationAmount})`));
+      toast.success(
+        "Need " +
+          (addedToBasket
+            ? "removed from basket"
+            : `added to basket (pledged $${donationAmount})`)
+      );
     } catch (error) {
-      console.error("Error updating basket:", error);
+      // console.error("Error updating basket:", error);
+      void error;
     } finally {
       setProcessing(false);
     }
   }
 
   return (
-    <div key={need.id} className="bg-white rounded-xl shadow-md p-5 hover:shadow-lg duration-150 transition-transform hover:scale-102">
+    <div
+      key={need.id}
+      className="bg-white rounded-xl shadow-md p-5 hover:shadow-lg duration-150 transition-transform hover:scale-102"
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <h2 className="text-lg font-bold text-gray-900">{need.title}</h2>
-          <p className="text-sm text-gray-600 mt-1 line-clamp-3">{need.description}</p>
+          <p className="text-sm text-gray-600 mt-1 line-clamp-3">
+            {need.description}
+          </p>
           <div className="mt-3 flex flex-wrap gap-2 items-center">
-            <span className={`px-2 py-1 text-xs font-medium rounded ${priorityColor(need.priority)}`}>{priorityIcon(need.priority)}</span>
-            <span className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">{need.category}</span>
-            {need.timeSensitive && <span className="text-xs text-white bg-red-600 px-2 py-1 rounded">Time sensitive</span>}
+            <span
+              className={`px-2 py-1 text-xs font-medium rounded ${priorityColor(
+                need.priority
+              )}`}
+            >
+              {priorityIcon(need.priority)}
+            </span>
+            <span className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">
+              {need.category}
+            </span>
+            {need.timeSensitive && (
+              <span className="text-xs text-white bg-red-600 px-2 py-1 rounded">
+                Time sensitive
+              </span>
+            )}
           </div>
         </div>
       </div>
 
       <div className="mt-4">
         <div className="flex items-center justify-between text-sm text-gray-600">
-          <div>Donated: ${donated.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
-          <div>Goal: ${needed.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+          <div>
+            Donated: $
+            {donated.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </div>
+          <div>
+            Goal: $
+            {needed.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </div>
         </div>
 
         <div className="mt-2 bg-gray-100 rounded-full h-2 overflow-hidden">
-          <div style={{ width: `${fundedPercent(donated, needed)}%` }} className="h-full bg-green-500" />
+          <div
+            style={{ width: `${fundedPercent(donated, needed)}%` }}
+            className="h-full bg-green-500"
+          />
         </div>
-        <div className="text-xs text-gray-500 mt-1">{fundedPercent(donated, needed)}% funded</div>
+        <div className="text-xs text-gray-500 mt-1">
+          {fundedPercent(donated, needed)}% funded
+        </div>
 
         {!addedToBasket && (
           <div className="mt-3">
-            <label className="text-sm text-gray-700 mb-1 block">Donate amount</label>
+            <label className="text-sm text-gray-700 mb-1 block">
+              Donate amount
+            </label>
             <div className="flex items-center gap-3">
               <input
                 aria-label={`Select donation amount up to $${remaining}`}
@@ -113,17 +160,26 @@ export const NeedCard = ({
                 }}
               />
             </div>
-            <div className="w-full text-right text-sm font-medium mt-2">Selected: ${donationAmount}</div>
+            <div className="w-full text-right text-sm font-medium mt-2">
+              Selected: ${donationAmount}
+            </div>
           </div>
         )}
       </div>
 
       <div className="mt-4 flex items-center justify-between">
-        <a className="text-sm text-blue-600 hover:underline cursor-pointer" href={`mailto:${need.contactInfo.split(" | ")[0] ?? ""}`}>Contact</a>
+        <a
+          className="text-sm text-blue-600 hover:underline cursor-pointer"
+          href={`mailto:${need.contactInfo.split(" | ")[0] ?? ""}`}
+        >
+          Contact
+        </a>
         <div className="flex gap-2">
           <button
             className={`px-3 py-1 text-sm cursor-pointer  text-white rounded ${
-              addedToBasket ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700"
+              addedToBasket
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-blue-600 hover:bg-blue-700"
             }`}
             onClick={() => handleBasketClick()}
             disabled={processing}

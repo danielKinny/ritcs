@@ -23,7 +23,7 @@ const BasketPage = () => {
       const res = await fetch(`/api/checkout`, {
         method: "POST",
         body: JSON.stringify({
-          userID: currentUser.id
+          userID: currentUser.id,
         }), //only send across needID and donation amount as it's the only thing thats needed
         //why overcomplicate
         headers: {
@@ -40,7 +40,7 @@ const BasketPage = () => {
       setBasketItems([]); // clear basket
     } catch (err: any) {
       toast.error(err?.message || "Failed to checkout");
-      console.error(err);
+      // console.error(err);
     } finally {
       //logs user in again so that their donations ar e updated
       setUser(currentUser?.username || "", currentUser?.password || "");
@@ -70,7 +70,7 @@ const BasketPage = () => {
       );
       setLoading(false);
     } finally {
-      console.log(basketItems); //logging purposes
+      // console.log(basketItems); // logging purposes
     }
   }, [currentUser?.id]);
 

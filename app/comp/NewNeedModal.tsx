@@ -11,7 +11,12 @@ interface NewNeedModalProps {
   onCreated: () => void;
 }
 
-const NewNeedModal: FC<NewNeedModalProps> = ({ adminID, need, onClose, onCreated }) => {
+const NewNeedModal: FC<NewNeedModalProps> = ({
+  adminID,
+  need,
+  onClose,
+  onCreated,
+}) => {
   const [form, setForm] = useState<{
     title: string;
     description: string;
@@ -46,7 +51,7 @@ const NewNeedModal: FC<NewNeedModalProps> = ({ adminID, need, onClose, onCreated
     setError(null);
   };
 
-  const handleSubmit = async (e:FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -67,7 +72,8 @@ const NewNeedModal: FC<NewNeedModalProps> = ({ adminID, need, onClose, onCreated
     setSubmitting(true);
     try {
       const isEdit = Boolean(need?.id);
-      const basePayload = { //trim whitespaces for free-text fields; category is a typed union so keep it as-is
+      const basePayload = {
+        //trim whitespaces for free-text fields; category is a typed union so keep it as-is
         ...form,
         title: form.title.trim(),
         description: form.description.trim(),
@@ -91,15 +97,17 @@ const NewNeedModal: FC<NewNeedModalProps> = ({ adminID, need, onClose, onCreated
       });
 
       reset(); //reset fields
-      onCreated(); // 
+      onCreated(); //
     } catch (err) {
+      void err;
       setError("something went wrong");
     } finally {
       setSubmitting(false);
     }
   };
 
-  useEffect(() => { //resets on every new need, if there is a need passed through, that data is loaded in
+  useEffect(() => {
+    //resets on every new need, if there is a need passed through, that data is loaded in
     if (need) {
       setForm({
         title: need.title || "",
@@ -119,8 +127,14 @@ const NewNeedModal: FC<NewNeedModalProps> = ({ adminID, need, onClose, onCreated
 
       <div className="relative z-10 w-full max-w-lg rounded-lg bg-white p-6 shadow-xl">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">{need ? "Edit Need" : "Create New Need"}</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700" aria-label="Close">
+          <h2 className="text-lg font-semibold">
+            {need ? "Edit Need" : "Create New Need"}
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700"
+            aria-label="Close"
+          >
             ✕
           </button>
         </div>
@@ -138,7 +152,9 @@ const NewNeedModal: FC<NewNeedModalProps> = ({ adminID, need, onClose, onCreated
               type="text"
               className="mt-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={form.title}
-              onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))}
+              onChange={(e) =>
+                setForm((p) => ({ ...p, title: e.target.value }))
+              }
               required
             />
           </div>
@@ -149,25 +165,32 @@ const NewNeedModal: FC<NewNeedModalProps> = ({ adminID, need, onClose, onCreated
               className="mt-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={3}
               value={form.description}
-              onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
+              onChange={(e) =>
+                setForm((p) => ({ ...p, description: e.target.value }))
+              }
             />
           </div>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
-                <label className="block text-sm font-medium">Category</label>
-                <select
-                  className="mt-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={form.category}
-                  onChange={(e) => setForm((p) => ({ ...p, category: e.target.value as Need["category"] }))}
-                >
-                  <option value="Food">Food</option>
-                  <option value="Clothing">Clothing</option>
-                  <option value="Shelter">Shelter</option>
-                  <option value="Medical">Medical</option>
-                  <option value="Education">Education</option>
-                  <option value="Other">Other</option>
-                </select>
+              <label className="block text-sm font-medium">Category</label>
+              <select
+                className="mt-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={form.category}
+                onChange={(e) =>
+                  setForm((p) => ({
+                    ...p,
+                    category: e.target.value as Need["category"],
+                  }))
+                }
+              >
+                <option value="Food">Food</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Shelter">Shelter</option>
+                <option value="Medical">Medical</option>
+                <option value="Education">Education</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
 
             <div>
@@ -175,7 +198,12 @@ const NewNeedModal: FC<NewNeedModalProps> = ({ adminID, need, onClose, onCreated
               <select
                 className="mt-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={form.priority}
-                onChange={(e) => setForm((p) => ({ ...p, priority: e.target.value as Priority }))}
+                onChange={(e) =>
+                  setForm((p) => ({
+                    ...p,
+                    priority: e.target.value as Priority,
+                  }))
+                }
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -191,7 +219,9 @@ const NewNeedModal: FC<NewNeedModalProps> = ({ adminID, need, onClose, onCreated
                 type="text"
                 className="mt-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={form.contactInfo}
-                onChange={(e) => setForm((p) => ({ ...p, contactInfo: e.target.value }))}
+                onChange={(e) =>
+                  setForm((p) => ({ ...p, contactInfo: e.target.value }))
+                }
               />
             </div>
           </div>
@@ -207,23 +237,29 @@ const NewNeedModal: FC<NewNeedModalProps> = ({ adminID, need, onClose, onCreated
                 value={form.amountNeeded}
                 onChange={(e) => {
                   const cleaned = e.target.value.replace(/[^0-9.]/g, "");
-                  setForm((p) => ({ ...p, amountNeeded: cleaned ? Number(cleaned) : 0 }));
+                  setForm((p) => ({
+                    ...p,
+                    amountNeeded: cleaned ? Number(cleaned) : 0,
+                  }));
                 }}
                 required
                 aria-label="Amount needed"
               />
             </div>
           </div>
-          
 
           <div className="flex items-center gap-2">
             <input
               id="timeSensitive"
               type="checkbox"
               checked={form.timeSensitive}
-              onChange={(e) => setForm((p) => ({ ...p, timeSensitive: e.target.checked }))}
+              onChange={(e) =>
+                setForm((p) => ({ ...p, timeSensitive: e.target.checked }))
+              }
             />
-            <label htmlFor="timeSensitive" className="text-sm">Time sensitive</label>
+            <label htmlFor="timeSensitive" className="text-sm">
+              Time sensitive
+            </label>
           </div>
 
           <div className="mt-4 flex justify-end gap-2">
@@ -239,7 +275,13 @@ const NewNeedModal: FC<NewNeedModalProps> = ({ adminID, need, onClose, onCreated
               disabled={submitting || (!adminID && !need)}
               className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
             >
-              {submitting ? (need ? "Updating..." : "Creating...") : (need ? "Update" : "Create")}
+              {submitting
+                ? need
+                  ? "Updating..."
+                  : "Creating..."
+                : need
+                ? "Update"
+                : "Create"}
             </button>
           </div>
         </form>

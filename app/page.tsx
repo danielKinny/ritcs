@@ -15,6 +15,7 @@ export default function Home() {
       await setUser(username, password);
       router.push("/dashboard");
     } catch (error) {
+      void error;
       setErrorMessage("Invalid username or password");
     }
   }

@@ -27,25 +27,38 @@ const Nav = () => {
         </h1>
       </Link>
 
-
       <div className="flex flex-row items-center justify-end w-full">
-        {currentUser?.role==='user' && (<Link href="/needs" className="mr-4 text-sm notable-regular hover:scale-103 transition-transform">
-          Needs
-        </Link>)}
+        {currentUser?.role === "user" && (
+          <Link
+            href="/needs"
+            className="mr-4 text-sm notable-regular hover:scale-103 transition-transform"
+          >
+            Needs
+          </Link>
+        )}
 
-        <Link href={currentUser?.role==='admin' ? "/cupboard" : "/basket"} className="mr-4 text-sm notable-regular hover:scale-103 transition-transform">
-            {currentUser?.role==='admin' ? "Cupboard" : "Basket"}
+        <Link
+          href={currentUser?.role === "admin" ? "/cupboard" : "/basket"}
+          className="mr-4 text-sm notable-regular hover:scale-103 transition-transform"
+        >
+          {currentUser?.role === "admin" ? "Cupboard" : "Basket"}
         </Link>
-        <Link href="/dashboard" className="mr-4 text-sm notable-regular hover:scale-103 transition-transform">
+        <Link
+          href="/dashboard"
+          className="mr-4 text-sm notable-regular hover:scale-103 transition-transform"
+        >
           Dashboard
         </Link>
-        <Link href="/community" className="mr-4 text-sm notable-regular hover:scale-103 transition-transform">
+        <Link
+          href="/community"
+          className="mr-4 text-sm notable-regular hover:scale-103 transition-transform"
+        >
           Community
         </Link>
         <button
           onClick={async () => {
             await removeUser();
-            router.push('/');
+            router.push("/");
           }}
           className="text-sm text-red-600 mr-10 hover:underline cursor-pointer"
           aria-label="Logout"

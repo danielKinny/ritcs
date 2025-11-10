@@ -21,25 +21,24 @@ const LandingDashboard = () => {
   };
 
   const [statsData, setStatsData] = useState<StatsData>(defaultStats);
-  const {
-    currentUser,
-  } = useUser(); //user ctx
+  const { currentUser } = useUser(); //user ctx
 
-  useEffect( () => {
-          const fetchData = async () => {
-              try {
-                  const res = await fetch('/api/impact')
-                  if (!res.ok) {
-                      throw new Error('Failed to fetch impact data')
-                  }
-                  const statsData = await res.json()
-                  setStatsData(statsData)
-              } catch (error) {
-                  console.error('Error fetching impact data:', error)
-              }
-          }
-          fetchData()
-      }, [])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/impact");
+        if (!res.ok) {
+          throw new Error("Failed to fetch impact data");
+        }
+        const statsData = await res.json();
+        setStatsData(statsData);
+      } catch (error) {
+        // console.error('Error fetching impact data:', error)
+        void error;
+      }
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchNeeds = async () => {
@@ -49,11 +48,16 @@ const LandingDashboard = () => {
          * if the user is an admin, it fetches all the needs that the admin created
          * if the user is a regular user, it fetches all the needs avaialable
          */
-        const endp = currentUser?.role === 'admin' ? "/api/cupboard/?adminID=" + (currentUser?.id || "") : "/api/needs/?userID=" + (currentUser?.id || "");
+        const endp =
+          currentUser?.role === "admin"
+            ? "/api/cupboard/?adminID=" + (currentUser?.id || "")
+            : "/api/needs/?userID=" + (currentUser?.id || "");
         const resp = await fetch(endp);
         if (resp.ok) {
           const data = await resp.json();
-          setNeeds(currentUser?.role === 'admin' ? data || [] : data.needs || []);
+          setNeeds(
+            currentUser?.role === "admin" ? data || [] : data.needs || []
+          );
           /**
            * there is a difference in how each different endpoint returns the data
            * the endp. meant for admins returns an array of needs directly
@@ -61,7 +65,8 @@ const LandingDashboard = () => {
            */
         }
       } catch (err) {
-        console.error(err);
+        // console.error(err);
+        void err;
       }
     };
     fetchNeeds();
@@ -69,7 +74,11 @@ const LandingDashboard = () => {
 
   return (
     <Route>
-          <DashboardComp currentUser={currentUser as User} needs={needs as Need[]} statsData={statsData} />
+      <DashboardComp
+        currentUser={currentUser as User}
+        needs={needs as Need[]}
+        statsData={statsData}
+      />
     </Route>
     //react is goated
   );

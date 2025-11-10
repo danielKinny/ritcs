@@ -19,7 +19,7 @@ async function databaseConnection() {
       database: dbName,
     });
 
-    console.log(`Database connection established. Using schema: ${dbName}`);
+    // console.log(`Database connection established. Using schema: ${dbName}`);
   }
   return db;
 }
