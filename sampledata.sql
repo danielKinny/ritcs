@@ -38,7 +38,6 @@ INSERT INTO community_items (id, title, description, category, createdAt, volunt
 (8, 'Youth Tutoring and Mentorship Night', 'We are launching a Youth Tutoring and Mentorship Night held every Wednesday at Old Town Community Learning Center. We are looking for university students, teachers, and professionals willing to tutor subjects such as math, science, language studies, and exam preparation. Mentors will also give informal guidance on future education and career decisions to students aged 12–18.', 'Education', '2025-11-10 00:06:27', 0),
 (9, 'Emergency Shelter Support Team', 'Our emergency shelter support group will assist with organizing bedding, hygiene kits, and basic supplies at the Evergreen Temporary Relief Shelter. Volunteers are needed to sort donated blankets, toiletries, and mattresses into labeled storage sections. Part of the team will also help new arrivals get settled and oriented. Compassion, patience, and calm presence are key for this role.', 'Shelter', '2025-11-10 00:06:27', 0),
 (10, 'Free Clothing Swap Event', 'We are hosting a free Clothing Swap at the Lakeside Cultural Hall. Participants may bring clothing they no longer need and exchange items freely with others. Volunteers are needed to help receive clothing at the door, inspect items for quality, and create separated sections by size and category. A great way to promote sustainability and reduce textile waste within our community.', 'Clothing', '2025-11-10 00:06:27', 0),
-(11, 'asd', 'asd', 'Shelter', '2025-11-10 00:22:40', 0);
 
 -- baskets
 INSERT INTO baskets (basketID, userID) VALUES
@@ -61,7 +60,6 @@ INSERT INTO admin_community_items (adminID, communityItemID) VALUES
 (4, 8),
 (4, 9),
 (4, 10),
-(4, 11);
 
 -- user_prefs
 INSERT INTO user_prefs (userID, category) VALUES
