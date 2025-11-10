@@ -1,55 +1,157 @@
-CREATE TABLE users (
-    id INT(11) NOT NULL AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    role ENUM('admin','user') NOT NULL DEFAULT 'user',
-    amountDonated DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    PRIMARY KEY (id)
-);
+# **Needs Connect**  
+### *Connecting Non-Profit Organizations to Volunteers and Donors*
 
-CREATE TABLE needs (
-    id INT(11) NOT NULL AUTO_INCREMENT,
-    title VARCHAR(100) NOT NULL,
-    description TEXT NOT NULL,
-    category VARCHAR(100),
-    priority ENUM('low','medium','high') NOT NULL DEFAULT 'low',
-    timeSensitive TINYINT(1) NOT NULL DEFAULT 0,
-    contactInfo VARCHAR(255),
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    amountDonated DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    amountNeeded DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    adminID INT(11),
-    PRIMARY KEY (id),
-    FOREIGN KEY (adminID) REFERENCES users(id)
-);
+---
 
-CREATE TABLE baskets (
-    basketID INT(11) NOT NULL AUTO_INCREMENT,
-    userID INT(11) NOT NULL,
-    PRIMARY KEY (basketID),
-    FOREIGN KEY (userID) REFERENCES users(id)
-);
+### **From the Team at CIS**
 
-CREATE TABLE basket_needs (
-    basketID INT(11) NOT NULL,
-    needID INT(11) NOT NULL,
-    donation INT(11) NOT NULL,
-    PRIMARY KEY (basketID, needID),
-    FOREIGN KEY (basketID) REFERENCES baskets(basketID),
-    FOREIGN KEY (needID) REFERENCES needs(id)
-);
+**Needs Connect** is a platform designed to bridge the gap between **non-profit organizations**, **volunteers**, and **donors**.  
+This project was submitted to **RIT's 15th Annual Engineering Competition (Software Engineering Category).**
 
-CREATE TABLE cupboards (
-    cupboardID INT(11) NOT NULL AUTO_INCREMENT,
-    adminID INT(11) NOT NULL,
-    PRIMARY KEY (cupboardID),
-    FOREIGN KEY (adminID) REFERENCES users(id)
-);
+---
 
-CREATE TABLE cupboard_needs (
-    cupboardID INT(11) NOT NULL,
-    needID INT(11) NOT NULL,
-    PRIMARY KEY (cupboardID, needID),
-    FOREIGN KEY (cupboardID) REFERENCES cupboards(cupboardID),
-    FOREIGN KEY (needID) REFERENCES needs(id)
-);
+### **Team Members**
+- **Daniel Kinny**
+- **Amritish Banerjee**
+- **Syed Mohammad Hasan**
+
+---
+
+## 🚀 Tech Stack
+
+| Area | Tools Used |
+|------|------------|
+| Frontend Framework | **Next.js**, **React**, **TypeScript** |
+| Styling | **TailwindCSS**, **Heroicons**, **shadcn/ui** (Toaster Components) |
+| Backend / Database | **MariaDB**, custom SQL queries, Next.js API Routes |
+| UI Enhancements | **MUI** (Charts and Data Visualization) |
+
+---
+
+## ⚙️ Dependencies
+Ensure the following are installed:
+- `mariadb`
+- `npm`
+- `node`
+
+---
+
+## 🧑‍💻 How to Run the Application
+
+```bash
+# Clone the repository
+git clone https://github.com/danielKinny/ritcs.git
+
+# Navigate to project directory
+cd ritcs
+
+# Install dependencies
+npm i
+
+# Run development server
+npm run dev
+
+🗄️ Database Setup
+
+    Install MariaDB via Homebrew or your preferred package manager.
+
+    Start SQL server and login:
+
+mysql -u {your-username} -p
+
+Create the database:
+
+    CREATE DATABASE ritcs;
+
+    Run schema creation queries (provided in project).
+
+    Insert sample data (provided in project).
+
+🔐 Test Accounts
+Role	Username	Password
+Regular User	miraya1234	1234
+Admin	admin	admin0214
+🧱 Project Development Notes
+
+A key challenge during development was version control, primarily caused by:
+
+    Lack of a centralized database
+
+    Each team member maintaining local, unsynchronized database instances
+
+Our solution:
+
+    Divide-and-conquer feature ownership
+
+    Frequent voice calls to align development progress and schema state
+
+🏛️ System Architecture Strengths
+Feature	Benefit
+Reusable React Components	Scalability and maintainability
+Normalized SQL Database	Efficient storage and secure data integrity
+Clear API Layer	Organized and predictable backend logic
+Role-Based Access Control	Secure and dynamic functionality per user type
+🔗 API Endpoints Overview
+Route	Method	Description
+/basket	GET	Get all items in a user's basket
+	POST	Add item to basket
+	DELETE	Remove item from basket
+/checkout	POST	Finalize donation and clear basket
+/community	GET	Fetch all community posts
+	POST	Admin creates post
+	DELETE	Admin deletes post
+/cupboard	GET	Fetch admin-managed needs
+	POST	Admin creates need
+	PUT	Admin edits need
+	DELETE	Admin deletes need
+/impact	GET	Returns data for visualization (donation metrics)
+/login	POST	Authenticate user credentials
+/needs	GET	Fetch and sort needs by priority algorithm
+	PUT	Admin closes a need
+🎯 MVP Feature Implementation
+✅ Login / Logout
+
+Simple credential validation via /login API route.
+✅ Role-Based Access
+
+    Implemented using React Context + custom hooks
+
+    High-order components (HOCs) guard protected pages
+
+✅ Helper User Interface
+
+    Dashboard with priority needs overview + category charts
+
+    Searchable and filterable Needs Page
+
+    Interactive Basket + Checkout system
+
+✅ Needs Management for Admins
+
+    Create / Edit / Remove needs from the Cupboard Page
+
+    All changes persist and update the database
+
+✅ Data Persistence
+
+    Strong SQL-based backend with normalization
+
+    Data stays consistent and up-to-date across the app
+
+⭐ Feature Enhancements
+
+    Community Forum allows organizations to call volunteers for non-monetary tasks
+
+    Priority Scoring Algorithm ranks needs based on:
+
+        Remaining funding required
+
+        Time sensitivity
+
+        Category priority
+
+        Days since posted
+
+🏁 Summary
+
+Needs Connect provides a scalable and efficient platform for organizations to receive support — whether financial or volunteer-based — while ensuring a seamless experience for users and administrators.

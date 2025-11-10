@@ -6,9 +6,13 @@ export const POST = async (request: Request) => {
     const {
       userID,
     }: { userID: number } =
-      await request.json();
+      await request.json(); // get userID from params
 
-    const res = await GET(new Request(`${request.url}?userID=${userID}`));
+    const res = await GET(new Request(`${request.url}?userID=${userID}`)); // fetch fresh basket data
+    // the reason we arent just passing in the local state of needs in from the page before this is because
+    // we want to make sure that the amountNeeded field for the need is up to date,
+    // if a user passes in an old state there is a cance that there may be a donation that is higher than
+    // the amount needed.
 
     if (!res.ok) {
         const message = { error: "Failed to retrieve basket data" };

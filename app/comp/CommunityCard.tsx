@@ -3,9 +3,9 @@ import { CommunityItem } from "../types";
 
 const CommunityCard = ({ item }: { item: CommunityItem }) => {
   return (
-    <article className="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition">
+    <article className="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-transform hover:scale-103 cursor-pointer">
       <header className="mb-2">
-        <h3 className="text-md font-semibold text-gray-900">{item.title}</h3>
+        <h3 className="text-md font-semibold text-gray-900 notable-regular">{item.title}</h3>
         <div className="text-xs text-gray-500">{new Date(item.createdAt).toLocaleString()}</div>
       </header>
 

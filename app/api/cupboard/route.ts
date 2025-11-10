@@ -1,11 +1,22 @@
 import { Need } from "@/app/types";
 import databaseConnection from "@/app/database/dbinit";
 
-export async function GET(request: Request) {
+/**
+ * 
+ * this api can only be called from the cupboard page,
+ * hence only admins will be able to access this route
+ * due to existing route prot.
+ * thus there arent many user role checks,
+ * it isn't necessary
+ * 
+ */
+
+
+export async function GET(request: Request) { //function to get all needs for a specific admin
   try {
     const { searchParams } = new URL(request.url);
     const db = await databaseConnection();
-    const adminID: number = parseInt(searchParams.get("adminID") || "0");
+    const adminID: number = parseInt(searchParams.get("adminID") || "0"); // get adminid
     if (!adminID) {
       return new Response(
         JSON.stringify({ message: "Missing adminID parameter" }),
@@ -20,9 +31,9 @@ export async function GET(request: Request) {
 
     const [rows] = await db.execute("SELECT * FROM needs WHERE adminID = ?", [
       adminID,
-    ]);
+    ]); //fetch all needs for this specific admin
 
-    const adminNeeds: Need[] = Array.isArray(rows) ? (rows as Need[]) : [];
+    const adminNeeds: Need[] = Array.isArray(rows) ? (rows as Need[]) : []; //typecast as per usual
 
     return new Response(JSON.stringify(adminNeeds), {
       status: 200,
@@ -40,9 +51,9 @@ export async function GET(request: Request) {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: Request) { //function add a new need
   try {
-    const { need }: { need: Need } = await request.json();
+    const { need }: { need: Need } = await request.json(); // get need from request body
     if (!need) {
       return new Response(JSON.stringify({ message: "Missing parameters" }), {
         status: 400,
@@ -66,7 +77,7 @@ export async function POST(request: Request) {
         need.amountDonated,
         need.amountNeeded,
         need.adminID,
-      ]
+      ] //large payload
     );
 
     return new Response(JSON.stringify({ message: "Need created successfully" }), {
@@ -85,7 +96,7 @@ export async function POST(request: Request) {
   }
 }
 
-export async function PUT(request: Request) {
+export async function PUT(request: Request) { //function to change the data about existing needs
     try {
         const { need }: { need: Need } = await request.json();
         if (!need || !need.id) {
@@ -111,7 +122,10 @@ export async function PUT(request: Request) {
                 need.amountDonated,
                 need.amountNeeded,
                 need.id,
-            ]
+            ] //same payload as post req
+
+            //maybe we couldddd further optimise this by only updating fields that have changed
+            //however time is not on our side
         );
 
         return new Response(JSON.stringify({ message: "Need updated successfully" }), {
@@ -130,7 +144,7 @@ export async function PUT(request: Request) {
     }
 }
 
-export async function DELETE(req: Request) {
+export async function DELETE(req: Request) { //deletes specific need from the cupboard
   try {
     const { searchParams } = new URL(req.url);
     const needID: number = parseInt(searchParams.get("needID") || "0");
@@ -147,7 +161,7 @@ export async function DELETE(req: Request) {
     }
 
     const db = await databaseConnection();
-    await db.execute("DELETE FROM needs WHERE id = ?", [needID]);
+    await db.execute("DELETE FROM needs WHERE id = ?", [needID]); //simple delete query
 
     return new Response(
       JSON.stringify({ message: "Need deleted successfully" }),

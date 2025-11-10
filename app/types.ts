@@ -43,6 +43,7 @@ export interface CommunityItem {
     title : string;
     description : string;
     category : Need['category'];
+    volunteersNeeded : number;
     adminID : number;
     createdAt : string;
 }

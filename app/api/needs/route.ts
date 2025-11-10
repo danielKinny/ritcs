@@ -2,8 +2,7 @@
 import databaseConnection from "../../database/dbinit";
 import type { Need } from "@/app/types";
 
-
-export async function PUT(request: Request) {
+export async function PUT(request: Request) { //used to close a need, only can be done by admin
     try {
         const needID : number = Number(new URL(request.url).searchParams.get("needID"));
         const db = await databaseConnection();
@@ -20,7 +19,7 @@ export async function PUT(request: Request) {
     }
 }
     
-export async function GET(request: Request) {
+export async function GET(request: Request) { //fetch all needs, except those in basket
     try {
         const { searchParams } = new URL(request.url);
         const userID = searchParams.get("userID");
@@ -56,7 +55,7 @@ export async function GET(request: Request) {
                 case 'medium': return 2;
                 default: return 1; // last case is lowwww
             }
-        };
+        }; // converts priority field to an int to be used in calculation
 
         const computePriorityScore = (n: Need) => {
             const needWeight = priorityInt(n.priority); //priority based on listed priority
@@ -74,7 +73,7 @@ export async function GET(request: Request) {
                 return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
             }
             return needTwo - needOne;
-        });
+        }); 
 
         return new Response(JSON.stringify({ needs, basketNeedIDs }), {
             status: 200,
