@@ -1,4 +1,4 @@
-import {Need, Basket} from "@/app/types";
+import {BasketItem} from "@/app/types";
 import databaseConnection from "@/app/database/dbinit";
 import { NextResponse } from "next/server";
 
@@ -33,13 +33,11 @@ export async function GET(request: Request) {
     }
 
     const [basketNeeds] = await db.execute(
-        'SELECT * FROM needs INNER JOIN basket_needs ON needs.id = basket_needs.needID WHERE basket_needs.basketID = ?',
+        'SELECT needs.*,basket_needs.donation FROM needs INNER JOIN basket_needs ON needs.id = basket_needs.needID WHERE basket_needs.basketID = ?',
         [(userBasketID[0]).basketID]
     )
 
-    console.log(basketNeeds);
-
-    return new NextResponse(JSON.stringify(basketNeeds), {
+    return new NextResponse(JSON.stringify(basketNeeds as BasketItem[]), {
         status: 200,
         headers: {
             "Content-Type": "application/json",
@@ -51,8 +49,12 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
+        const donationAmount : number = (await request.json()).donationAmount;
         const needID : number = parseInt(searchParams.get("needID") || "0");
         const userID : number = parseInt(searchParams.get("userID") || "0");
+
+        console.log("Donation amount:", donationAmount);
+
         if (!needID || !userID) {
             return new Response(JSON.stringify({ message: "Missing needID or userID parameter" }), {
                 status: 400,
@@ -65,8 +67,8 @@ export async function POST(request: Request) {
         const db = await databaseConnection();
 
         await db.execute(
-            'INSERT INTO basket_needs (basketID, needID) VALUES ((SELECT basketID FROM baskets WHERE userID = ?), ?)',
-            [userID, needID]
+            'INSERT INTO basket_needs (basketID, needID, donation) VALUES ((SELECT basketID FROM baskets WHERE userID = ?), ?, ?)',
+            [userID, needID, donationAmount]
         );
         
         return new Response(JSON.stringify({ message: "Need added to basket successfully" }), {
@@ -119,8 +121,6 @@ export async function DELETE(request: Request) {
                 },
             });
         }
-
-
 
         let query = 'DELETE FROM basket_needs WHERE basketID = ?';
         
