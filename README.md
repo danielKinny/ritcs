@@ -95,31 +95,45 @@ Our solution:
 
     Frequent voice calls to align development progress and schema state
 
-🏛️ System Architecture Strengths
-Feature	Benefit
-Reusable React Components	Scalability and maintainability
-Normalized SQL Database	Efficient storage and secure data integrity
-Clear API Layer	Organized and predictable backend logic
-Role-Based Access Control	Secure and dynamic functionality per user type
-🔗 API Endpoints Overview
-Route	Method	Description
-/basket	GET	Get all items in a user's basket
-	POST	Add item to basket
-	DELETE	Remove item from basket
-/checkout	POST	Finalize donation and clear basket
-/community	GET	Fetch all community posts
-	POST	Admin creates post
-	DELETE	Admin deletes post
-/cupboard	GET	Fetch admin-managed needs
-	POST	Admin creates need
-	PUT	Admin edits need
-	DELETE	Admin deletes need
-/impact	GET	Returns data for visualization (donation metrics)
-/login	POST	Authenticate user credentials
-/needs	GET	Fetch and sort needs by priority algorithm
-	PUT	Admin closes a need
-🎯 MVP Feature Implementation
-✅ Login / Logout
+# 🏛️ System Architecture
+
+## Strengths, Features, and Benefits
+
+| Feature | Strength | Benefit |
+|---------|---------|--------|
+| Reusable React Components | Scalability and maintainability | Makes UI easier to manage and extend |
+| Normalized SQL Database | Efficient storage and secure data integrity | Reduces redundancy and ensures data consistency |
+| Clear API Layer | Organized and predictable backend logic | Simplifies frontend-backend interaction |
+| Role-Based Access Control | Secure and dynamic functionality per user type | Ensures users access only what they are allowed |
+
+---
+
+## 🔗 API Endpoints Overview
+
+| Route | Method | Description |
+|-------|--------|------------|
+| `/basket` | GET | Get all items in a user's basket |
+| `/basket` | POST | Add item to basket |
+| `/basket` | DELETE | Remove item from basket |
+| `/checkout` | POST | Finalize donation and clear basket |
+| `/community` | GET | Fetch all community posts |
+| `/community` | POST | Admin creates post |
+| `/community` | DELETE | Admin deletes post |
+| `/cupboard` | GET | Fetch admin-managed needs |
+| `/cupboard` | POST | Admin creates need |
+| `/cupboard` | PUT | Admin edits need |
+| `/cupboard` | DELETE | Admin deletes need |
+| `/impact` | GET | Returns data for visualization (donation metrics) |
+| `/login` | POST | Authenticate user credentials |
+| `/needs` | GET | Fetch and sort needs by priority algorithm |
+| `/needs` | PUT | Admin closes a need |
+
+---
+
+## 🎯 MVP Feature Implementation
+
+- ✅ Login / Logout
+
 
 Simple credential validation via /login API route.
 ✅ Role-Based Access
