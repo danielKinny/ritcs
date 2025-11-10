@@ -69,9 +69,9 @@ Create the database:
 ``` bash
     CREATE DATABASE ritcs;
 
-    Run schema creation queries (provided in project).
+    Run schema creation queries (provided in dbschema.sql).
 
-    Insert sample data (provided in project).
+    Insert sample data (provided in sampledata.sql).
 
 ```
 
