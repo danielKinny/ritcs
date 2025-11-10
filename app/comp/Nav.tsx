@@ -14,7 +14,7 @@ const Nav = () => {
   if (pathname === "/") return null; //doesnt display nav on login page
 
   return (
-    <div className="w-full drop-shadow-2xl bg-white border-b border-gray-800 flex items-center justify-start flex-row">
+    <div className="w-full drop-shadow-lg bg-white border-b border-gray-800 flex items-center justify-start flex-row">
       <Link href="/" className="flex items-center justify-start ml-10">
         <Image
           src="/logo.png"
