@@ -19,13 +19,10 @@ export default function Home() {
     }
   }
   return (
-    <div className="min-h-screen bg-whitetext-center justify-center items-center bg-[url('/background.png')] bg-no-repeat bg-cover grid grid-cols-2">
+    <div className="min-h-screen bg-white text-center justify-center items-center bg-[url('/background.png')] bg-no-repeat bg-cover flex ">
 
-      <div>
-
-      </div>
-      <div className="flex flex-col items-center justify-center">
-        <h1 className="font-extrabold text-5xl text-black">NEEDS CONNECT</h1>
+      <div className="flex flex-col items-center justify-center bg-white rounded-lg border border-gray-100 p-10 shadow-lg">
+        <h1 className="font-extrabold text-5xl text-blue-800 notable-regular">NEEDS CONNECT</h1>
         <div className="flex flex-col gap-4 mt-6">
         <p className="text-red-500">
           {errorMessage}
@@ -46,7 +43,7 @@ export default function Home() {
         />
 
         <button
-          className="bg-blue-500 hover:scale-105 h-15 transition-transform text-white p-2 rounded-lg cursor-pointer hover:bg-blue-600 "
+          className="bg-blue-500 notable-regular hover:scale-105 h-15 transition-transform text-white p-2 rounded-lg cursor-pointer hover:bg-blue-600 "
           onClick={() => {
             authenticateUser(userName, password);
           }}
