@@ -52,6 +52,17 @@ npm i
 npm run dev
 ```
 
+Environment Files
+
+    Create a .env file containing the following:
+
+```bash
+DATABASE_HOST=localhost
+DATABASE_USER=<your chosen database user>
+DATABASE_PASS=<your chosen database password>
+DATABASE_NAME=ritcs
+```
+
 🗄️ Database Setup
 
     Install MariaDB via Homebrew or your preferred package manager.

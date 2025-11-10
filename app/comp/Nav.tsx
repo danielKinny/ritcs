@@ -42,9 +42,16 @@ const Nav = () => {
         <Link href="/community" className="mr-4 text-sm notable-regular hover:scale-103 transition-transform">
           Community
         </Link>
-        <Link href="/" className="text-sm text-red-600 mr-10 hover:underline cursor-pointer" >
+        <button
+          onClick={async () => {
+            await removeUser();
+            router.push('/');
+          }}
+          className="text-sm text-red-600 mr-10 hover:underline cursor-pointer"
+          aria-label="Logout"
+        >
           <ArrowLeftEndOnRectangleIcon className="h-8 w-8 hover:scale-105 transition-transform" />
-        </Link>
+        </button>
       </div>
     </div>
   );

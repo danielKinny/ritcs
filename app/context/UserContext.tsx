@@ -7,8 +7,8 @@ import type { User } from "@/app/types";
 interface authorisationContext {
   atoken?: string | null;
   currentUser?: User | null;
-  setUser: (password: string, username: string) => void;
-  removeUser: () => void;
+  setUser: (password: string, username: string) => Promise<void>;
+  removeUser: () => Promise<void>;
 }
 //have to provide typing to satisfy ts
 
@@ -43,6 +43,13 @@ export function UserProvider({ children, initialUser = null }: props) {
   }
 
   async function removeUser(): Promise<void> {
+    try {
+      await fetch('/api/logout', { method: 'POST' });
+    } catch (e) {
+      // ignore network errors and still clear client state
+      console.error('Logout API call failed', e);
+    }
+
     setUser(null);
     setAtoken(null);
     return; //logs out

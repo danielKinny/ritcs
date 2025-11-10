@@ -20,14 +20,11 @@ export const NeedCard = ({
 
   const initialDonation = Number((need as BasketItem).donation) || 0;
   const [donationAmount, setDonationAmount] = React.useState<number>(initialDonation);
-  const initialLocal = Number(need.amountDonated) || 0;
-  const [localDonated, setLocalDonated] = React.useState<number>(initialLocal);
-  
 
   const needed = Number(need.amountNeeded) || 0;
   const donated = Number(need.amountDonated) || 0;
   const remainingLimit = Math.max(0, needed - donated);
-  const remaining = Math.max(0, needed - localDonated);
+  const remaining = Math.max(0, needed - donated);
 
   React.useEffect(() => {
     setDonationAmount((prev) => Math.min(prev, remainingLimit));
@@ -49,11 +46,8 @@ export const NeedCard = ({
         throw new Error("Failed to update basket: " + (text || res.statusText));
       }
 
-      // Success: update local state and parent
-      if (!addedToBasket && donationAmount > 0) {
-        setLocalDonated((prev) => prev + donationAmount);
-      }
-
+      // Success: notify parent to update basket state. Do not update local donated amount here;
+      // rely on parent to re-fetch needs or update the need data so UI reflects server state.
       onBasketChange?.(need.id, !addedToBasket);
       toast.success("Need " + (addedToBasket ? "removed from basket" : `added to basket (pledged $${donationAmount})`));
     } catch (error) {
@@ -79,14 +73,14 @@ export const NeedCard = ({
 
       <div className="mt-4">
         <div className="flex items-center justify-between text-sm text-gray-600">
-          <div>Donated: ${localDonated.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+          <div>Donated: ${donated.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
           <div>Goal: ${needed.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
         </div>
 
         <div className="mt-2 bg-gray-100 rounded-full h-2 overflow-hidden">
-          <div style={{ width: `${fundedPercent(localDonated, needed)}%` }} className="h-full bg-green-500" />
+          <div style={{ width: `${fundedPercent(donated, needed)}%` }} className="h-full bg-green-500" />
         </div>
-        <div className="text-xs text-gray-500 mt-1">{fundedPercent(localDonated, needed)}% funded</div>
+        <div className="text-xs text-gray-500 mt-1">{fundedPercent(donated, needed)}% funded</div>
 
         {!addedToBasket && (
           <div className="mt-3">
